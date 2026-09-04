@@ -93,30 +93,50 @@
       });
     }
 
-    // Setup Code Block Copy Buttons
+    // Setup Code Block Containers, Headers, and Copy Buttons
     appElement.querySelectorAll('pre').forEach(pre => {
-      // Don't add to mermaid blocks or if already added
-      if (pre.querySelector('code.language-mermaid') || pre.classList.contains('mermaid')) return;
-      if (pre.querySelector('.copy-code-btn')) return;
+      // Don't add to mermaid blocks or already processed blocks
+      if (pre.querySelector('code.language-mermaid') || pre.classList.contains('mermaid') || pre.closest('.code-block-container')) return;
 
-      const copySvg = `<svg class="copy-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
-      const checkSvg = `<svg class="copy-icon check-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+      const codeElement = pre.querySelector('code');
+      // Detect language if specified (e.g. language-bash -> bash)
+      let lang = '';
+      if (codeElement && codeElement.className) {
+        const langMatch = codeElement.className.match(/language-([a-zA-Z0-9_-]+)/);
+        if (langMatch) {
+          lang = langMatch[1];
+        }
+      }
+
+      // Create code block wrapper
+      const wrapper = document.createElement('div');
+      wrapper.className = 'code-block-container';
+
+      // Create header bar
+      const header = document.createElement('div');
+      header.className = 'code-header';
+
+      const langSpan = document.createElement('span');
+      langSpan.className = 'code-lang';
+      langSpan.textContent = lang || '';
+
+      const copySvg = `<svg class="copy-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="13" height="13" rx="2.5"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>`;
+      const checkSvg = `<svg class="copy-icon check-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
 
       const copyBtn = document.createElement('button');
       copyBtn.className = 'copy-code-btn';
       copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
-      copyBtn.innerHTML = `${copySvg}<span>copy</span>`;
+      copyBtn.innerHTML = `${copySvg}<span class="copy-text">copy</span>`;
 
       copyBtn.addEventListener('click', async (e) => {
         e.preventDefault();
-        const codeElement = pre.querySelector('code');
         const textToCopy = (codeElement ? codeElement.innerText : pre.innerText).replace(/^\s+|\s+$/g, '');
 
         const copySuccess = () => {
-          copyBtn.innerHTML = `${checkSvg}<span>copied!</span>`;
+          copyBtn.innerHTML = `${checkSvg}<span class="copy-text">copied!</span>`;
           copyBtn.classList.add('copied');
           setTimeout(() => {
-            copyBtn.innerHTML = `${copySvg}<span>copy</span>`;
+            copyBtn.innerHTML = `${copySvg}<span class="copy-text">copy</span>`;
             copyBtn.classList.remove('copied');
           }, 2000);
         };
@@ -146,7 +166,12 @@
         document.body.removeChild(textarea);
       });
 
-      pre.appendChild(copyBtn);
+      header.appendChild(langSpan);
+      header.appendChild(copyBtn);
+
+      pre.parentNode.insertBefore(wrapper, pre);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
     });
 
     // Render Mermaid diagrams with interactive zoom, pan, and fullscreen
