@@ -511,9 +511,49 @@
     }
   }
 
+  // Real-time Visitor Counter (Accurate hit/get logic with CountAPI)
+  async function initVisitorCounter() {
+    const counterElement = document.getElementById('visitor-count');
+    if (!counterElement) return;
+
+    const counterKey = 'infat0x_github_io_visits';
+    const isNewSession = !sessionStorage.getItem('visited_' + counterKey);
+    const endpoint = isNewSession
+      ? `https://countapi.mileshilliard.com/api/v1/hit/${counterKey}`
+      : `https://countapi.mileshilliard.com/api/v1/get/${counterKey}`;
+
+    // Read cached count if available to avoid flash of loading
+    const cachedCount = localStorage.getItem('last_known_' + counterKey);
+    if (cachedCount) {
+      counterElement.textContent = Number(cachedCount).toLocaleString();
+    }
+
+    try {
+      const res = await fetch(endpoint, { cache: 'no-store' });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && typeof data.value === 'number') {
+          sessionStorage.setItem('visited_' + counterKey, 'true');
+          localStorage.setItem('last_known_' + counterKey, data.value);
+          counterElement.textContent = data.value.toLocaleString();
+        }
+      } else if (!counterElement.textContent || counterElement.textContent === '...') {
+        counterElement.textContent = cachedCount ? Number(cachedCount).toLocaleString() : '1';
+      }
+    } catch (err) {
+      console.warn('Visitor counter fetch failed:', err);
+      if (!counterElement.textContent || counterElement.textContent === '...') {
+        counterElement.textContent = cachedCount ? Number(cachedCount).toLocaleString() : '1';
+      }
+    }
+  }
+
   // Event Listeners
   window.addEventListener('hashchange', handleRoute);
-  window.addEventListener('DOMContentLoaded', handleRoute);
+  window.addEventListener('DOMContentLoaded', () => {
+    handleRoute();
+    initVisitorCounter();
+  });
 
   // Global toggle for mobile hamburger
   window.toggleNav = function () {
