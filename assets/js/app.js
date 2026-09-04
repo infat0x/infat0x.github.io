@@ -93,7 +93,60 @@
       });
     }
 
-    // Render Mermaid diagrams
+    // Setup Code Block Copy Buttons
+    appElement.querySelectorAll('pre').forEach(pre => {
+      // Don't add to mermaid blocks or if already added
+      if (pre.querySelector('code.language-mermaid') || pre.classList.contains('mermaid')) return;
+      if (pre.querySelector('.copy-code-btn')) return;
+
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'copy-code-btn';
+      copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
+      copyBtn.innerHTML = `<span>📋</span> <span>Copy</span>`;
+
+      copyBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const codeElement = pre.querySelector('code');
+        const textToCopy = (codeElement ? codeElement.innerText : pre.innerText).replace(/^\s+|\s+$/g, '');
+
+        const copySuccess = () => {
+          copyBtn.innerHTML = `<span>✓</span> <span>Copied!</span>`;
+          copyBtn.classList.add('copied');
+          setTimeout(() => {
+            copyBtn.innerHTML = `<span>📋</span> <span>Copy</span>`;
+            copyBtn.classList.remove('copied');
+          }, 2000);
+        };
+
+        if (navigator.clipboard && window.isSecureContext) {
+          try {
+            await navigator.clipboard.writeText(textToCopy);
+            copySuccess();
+            return;
+          } catch (err) {
+            console.warn('Clipboard API failed, trying fallback...', err);
+          }
+        }
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = textToCopy;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          copySuccess();
+        } catch (err) {
+          console.error('Fallback copy failed', err);
+        }
+        document.body.removeChild(textarea);
+      });
+
+      pre.appendChild(copyBtn);
+    });
+
+    // Render Mermaid diagrams with interactive zoom, pan, and fullscreen
     if (window.mermaid) {
       const mermaidBlocks = appElement.querySelectorAll('pre code.language-mermaid');
       if (mermaidBlocks.length > 0) {
@@ -105,14 +158,174 @@
           pre.replaceWith(div);
         });
         try {
-          mermaid.run();
+          await mermaid.run();
         } catch (e) {
           console.warn('Mermaid rendering error:', e);
         }
         // Remove error SVGs if an error ever occurred
         document.querySelectorAll('svg[aria-roledescription="error"]').forEach(el => el.remove());
+
+        // Enhance rendered Mermaid diagrams with zoom, pan, and fullscreen
+        enhanceMermaidContainers(appElement);
       }
     }
+  }
+
+  function enhanceMermaidContainers(container) {
+    const mermaidElements = container.querySelectorAll('.mermaid');
+    mermaidElements.forEach((mermaidDiv, idx) => {
+      if (mermaidDiv.closest('.mermaid-container')) return;
+      const svg = mermaidDiv.querySelector('svg');
+      if (!svg) return;
+
+      // Create outer container
+      const wrapper = document.createElement('div');
+      wrapper.className = 'mermaid-container';
+
+      // Create toolbar
+      const toolbar = document.createElement('div');
+      toolbar.className = 'mermaid-toolbar';
+      toolbar.innerHTML = `
+        <span class="m-title">Flowchart #${idx + 1}</span>
+        <button class="m-btn m-zoom-in" title="Zoom In">+</button>
+        <button class="m-btn m-zoom-out" title="Zoom Out">&minus;</button>
+        <button class="m-btn m-reset" title="Reset Zoom">↺ Reset</button>
+        <button class="m-btn m-fullscreen" title="Toggle Fullscreen">⛶ Expand</button>
+      `;
+
+      // Create viewport & content
+      const viewport = document.createElement('div');
+      viewport.className = 'mermaid-viewport';
+
+      const content = document.createElement('div');
+      content.className = 'mermaid-content';
+
+      // Move mermaidDiv into content
+      mermaidDiv.parentNode.insertBefore(wrapper, mermaidDiv);
+      content.appendChild(mermaidDiv);
+      viewport.appendChild(content);
+      wrapper.appendChild(toolbar);
+      wrapper.appendChild(viewport);
+
+      const hint = document.createElement('div');
+      hint.className = 'mermaid-hint';
+      hint.innerHTML = 'scroll to zoom &bull; click &amp; drag to pan';
+      wrapper.appendChild(hint);
+
+      // State
+      let scale = 1;
+      let translateX = 0;
+      let translateY = 0;
+      let isDragging = false;
+      let startX = 0;
+      let startY = 0;
+
+      function updateTransform(smooth) {
+        content.style.transition = smooth ? 'transform 0.15s ease-out' : 'none';
+        content.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+      }
+
+      // Toolbar Controls
+      const btnIn = toolbar.querySelector('.m-zoom-in');
+      const btnOut = toolbar.querySelector('.m-zoom-out');
+      const btnReset = toolbar.querySelector('.m-reset');
+      const btnFs = toolbar.querySelector('.m-fullscreen');
+
+      btnIn.addEventListener('click', (e) => {
+        e.preventDefault();
+        scale = Math.min(scale * 1.3, 6.0);
+        updateTransform(true);
+      });
+
+      btnOut.addEventListener('click', (e) => {
+        e.preventDefault();
+        scale = Math.max(scale / 1.3, 0.35);
+        updateTransform(true);
+      });
+
+      btnReset.addEventListener('click', (e) => {
+        e.preventDefault();
+        scale = 1;
+        translateX = 0;
+        translateY = 0;
+        updateTransform(true);
+      });
+
+      btnFs.addEventListener('click', (e) => {
+        e.preventDefault();
+        wrapper.classList.toggle('is-fullscreen');
+        if (wrapper.classList.contains('is-fullscreen')) {
+          btnFs.innerHTML = '✕ Close';
+          document.body.style.overflow = 'hidden';
+        } else {
+          btnFs.innerHTML = '⛶ Expand';
+          document.body.style.overflow = '';
+        }
+      });
+
+      // Escape key to exit fullscreen
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && wrapper.classList.contains('is-fullscreen')) {
+          wrapper.classList.remove('is-fullscreen');
+          btnFs.innerHTML = '⛶ Expand';
+          document.body.style.overflow = '';
+        }
+      });
+
+      // Pan Dragging (Mouse)
+      viewport.addEventListener('mousedown', (e) => {
+        if (e.target.closest('.mermaid-toolbar')) return;
+        isDragging = true;
+        startX = e.clientX - translateX;
+        startY = e.clientY - translateY;
+        viewport.classList.add('grabbing');
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        translateX = e.clientX - startX;
+        translateY = e.clientY - startY;
+        updateTransform(false);
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (isDragging) {
+          isDragging = false;
+          viewport.classList.remove('grabbing');
+        }
+      });
+
+      // Pan Dragging (Touch)
+      let touchStartX = 0;
+      let touchStartY = 0;
+      viewport.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+          isDragging = true;
+          touchStartX = e.touches[0].clientX - translateX;
+          touchStartY = e.touches[0].clientY - translateY;
+        }
+      }, { passive: true });
+
+      viewport.addEventListener('touchmove', (e) => {
+        if (!isDragging || e.touches.length !== 1) return;
+        translateX = e.touches[0].clientX - touchStartX;
+        translateY = e.touches[0].clientY - touchStartY;
+        updateTransform(false);
+      }, { passive: true });
+
+      viewport.addEventListener('touchend', () => {
+        isDragging = false;
+      });
+
+      // Mouse Wheel Zoom
+      viewport.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const factor = e.deltaY < 0 ? 1.15 : 0.87;
+        const newScale = Math.min(Math.max(scale * factor, 0.35), 6.0);
+        scale = newScale;
+        updateTransform(false);
+      }, { passive: false });
+    });
   }
 
   async function renderBlogIndex() {

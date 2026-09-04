@@ -195,15 +195,16 @@ code {
 }
 
 pre {
+  position: relative;
   background-color: var(--code-bg);
   border: 1px solid #333333;
-  padding: 14px;
+  padding: 28px 14px 14px 14px;
   border-radius: 4px;
   overflow-x: auto;
   font-size: 0.9em;
   line-height: 1.5;
   color: #eeeeee;
-  margin: 1em 0;
+  margin: 1.2em 0;
 }
 
 pre code {
@@ -211,6 +212,170 @@ pre code {
   padding: 0;
   background: transparent;
   color: inherit;
+}
+
+/* Code Block Copy Button */
+.copy-code-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: #252525;
+  border: 1px solid #444444;
+  color: #cccccc;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0.75;
+  transition: all 0.15s ease;
+  user-select: none;
+  z-index: 10;
+}
+
+pre:hover .copy-code-btn,
+.copy-code-btn:focus {
+  opacity: 1;
+  border-color: var(--theme-color);
+}
+
+.copy-code-btn:hover {
+  color: #ffffff;
+  background-color: #333333;
+  border-color: var(--theme-color);
+}
+
+.copy-code-btn.copied {
+  color: #00e676;
+  border-color: #00e676;
+  background: rgba(0, 230, 118, 0.1);
+}
+
+/* Interactive Mermaid Container: Zoom, Pan & Fullscreen */
+.mermaid-container {
+  position: relative;
+  border: 1px solid #333333;
+  background-color: #1a1a1a;
+  border-radius: 4px;
+  margin: 1.5em 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.mermaid-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 6px 10px;
+  background: rgba(25, 25, 25, 0.95);
+  border-bottom: 1px solid #2e2e2e;
+  z-index: 10;
+}
+
+.mermaid-toolbar .m-title {
+  margin-right: auto;
+  font-size: 0.75rem;
+  color: var(--subtle-text);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.m-btn {
+  background: #282828;
+  border: 1px solid #444444;
+  color: #eeeeee;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  line-height: 1;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.m-btn:hover {
+  background: #383838;
+  border-color: var(--theme-color);
+  color: var(--theme-color);
+}
+
+.m-btn:active {
+  transform: scale(0.95);
+}
+
+.mermaid-viewport {
+  position: relative;
+  width: 100%;
+  min-height: 220px;
+  max-height: 520px;
+  overflow: hidden;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #181818;
+}
+
+.mermaid-viewport.grabbing {
+  cursor: grabbing !important;
+}
+
+.mermaid-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center center;
+  user-select: none;
+  width: 100%;
+}
+
+.mermaid-content svg {
+  max-width: none !important;
+  height: auto;
+  display: block;
+}
+
+.mermaid-hint {
+  padding: 4px 10px;
+  font-size: 0.72rem;
+  color: #777777;
+  text-align: right;
+  border-top: 1px solid #222222;
+  background: #151515;
+  user-select: none;
+}
+
+/* Fullscreen Mode for Mermaid */
+.mermaid-container.is-fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 99999 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  background-color: rgba(18, 18, 18, 0.98) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.mermaid-container.is-fullscreen .mermaid-viewport {
+  max-height: none !important;
+  flex: 1 !important;
+  height: calc(100vh - 75px) !important;
+}
+
+.mermaid-container.is-fullscreen .mermaid-toolbar {
+  padding: 10px 18px;
+  border-bottom: 1px solid #383838;
 }
 
 /* Markdown Elements */
