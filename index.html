@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Ali Guliyev Personal Website</title>
+  <meta name="description" content="Personal website of Ali Guliyev (infat0x) - Computer security, exploit research, programming, and open-source tools.">
+  <meta name="theme-color" content="#ff424d">
+  <meta name="color-scheme" content="dark">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/highlight.css">
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <link rel="icon" type="image/png" href="./assets/img/avatar.png">
+</head>
+<body>
+  <div class="content">
+    <header class="site-header">
+      <h2>Ali Guliyev - <a href="#/az" id="lang-switch">azərbaycan dili</a></h2>
+      <p class="tagline">penetration tester at kapital bank, security researcher, ctf player</p>
+      
+      <nav class="nav-container" aria-label="Main Navigation">
+        <button class="nav-toggle" aria-label="Toggle navigation" onclick="window.toggleNav()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <ul class="nav-menu">
+          <li><a href="#/">homepage</a></li>
+          <li class="nav-separator">|</li>
+          <li><a href="#/about">about</a></li>
+          <li class="nav-separator">|</li>
+          <li><a href="#/tools">tools</a></li>
+          <li class="nav-separator">|</li>
+          <li><a href="#/presentations">presentations</a></li>
+          <li class="nav-separator">|</li>
+          <li><a href="#/music">music</a></li>
+          <li class="nav-separator">|</li>
+          <li><a href="#/press">press</a></li>
+          <li class="nav-separator">|</li>
+          <li><a href="#/blog">blog</a></li>
+          <li class="nav-separator">|</li>
+          <li><a href="#/contact">contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="app">
+      <!-- Dynamically loaded from content/*.md -->
+      <div class="loading">Loading...</div>
+    </main>
+
+    <footer>
+      <small>design by <a href="https://github.com/infat0x" target="_blank" rel="noopener noreferrer">infat0x</a></small>
+    </footer>
+  </div>
+
+  <script src="./assets/js/marked.min.js"></script>
+  <script src="./assets/js/highlight.min.js"></script>
+  <script src="./assets/js/mermaid.min.js"></script>
+  <script src="./assets/js/app.js"></script>
+</body>
+</html>

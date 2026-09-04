@@ -1,0 +1,47 @@
+[
+  {
+    "title": "Defeating Extension Spoofing: Magic Bytes Forensics",
+    "slug": "magic-bytes",
+    "date": "November 2025",
+    "summary": "Modern attack chains frequently conceal weaponized files behind misleading extensions (e.g. invoice.pdf.exe or using right-to-left override Unicode characters). Operating systems a...",
+    "tags": [
+      "Digital Forensics",
+      "File Analysis",
+      "Defense"
+    ]
+  },
+  {
+    "title": "Fixing Omarchy Stuck at Boot: A Complete Recovery Guide",
+    "slug": "fixing-omarchy-stuck-at-boot",
+    "date": "March 2026",
+    "summary": "> TL;DR: After a fresh Omarchy install, the system may freeze after the password screen due to a broken initramfs. This guide walks you through fixing it via chroot from the Omarch...",
+    "tags": [
+      "Linux",
+      "Arch",
+      "Troubleshooting",
+      "Recovery"
+    ]
+  },
+  {
+    "title": "Active Directory Attack Paths: Notes from the Field",
+    "slug": "active-directory",
+    "date": "January 2026",
+    "summary": "During penetration testing assessments of Windows enterprise networks, modern attack paths rarely rely on single software exploits. Instead, they chain together misconfigurations, ...",
+    "tags": [
+      "Active Directory",
+      "Red Team",
+      "OSCP"
+    ]
+  },
+  {
+    "title": "Exploiting GNU telnetd Authentication Bypass (CVE-2026-24061)",
+    "slug": "cve-2026-24061",
+    "date": "February 2026",
+    "summary": "GNU InetUtils telnetd is a legacy remote terminal daemon still deployed in embedded devices, virtualization appliances, and internal lab environments. During code audit of the daem...",
+    "tags": [
+      "Exploit Dev",
+      "Vulnerability Research",
+      "Linux"
+    ]
+  }
+]
