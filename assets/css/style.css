@@ -395,18 +395,11 @@ footer small a:hover {
   }
 }
 
-/* Suppress any Mermaid error popups or bomb icons on the site */
-#dmermaid,
-[id^="dmermaid"],
-svg[aria-roledescription="error"],
-.error-icon,
-.error-text {
+/* Suppress any Mermaid error bomb popups */
+svg[aria-roledescription="error"] {
   display: none !important;
   visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
   height: 0 !important;
   width: 0 !important;
-  overflow: hidden !important;
 }
 

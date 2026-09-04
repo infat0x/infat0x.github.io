@@ -93,33 +93,24 @@
       });
     }
 
-    // Render Mermaid diagrams safely without error bombs
+    // Render Mermaid diagrams
     if (window.mermaid) {
       const mermaidBlocks = appElement.querySelectorAll('pre code.language-mermaid');
       if (mermaidBlocks.length > 0) {
-        for (let i = 0; i < mermaidBlocks.length; i++) {
-          const block = mermaidBlocks[i];
+        mermaidBlocks.forEach(block => {
           const pre = block.parentElement;
-          const code = (block.textContent || '').trim();
-          try {
-            if (typeof mermaid.parse === 'function') {
-              await mermaid.parse(code);
-            }
-            const div = document.createElement('div');
-            div.className = 'mermaid';
-            div.textContent = code;
-            pre.replaceWith(div);
-          } catch (err) {
-            console.warn('Skipping invalid mermaid diagram:', err);
-          }
-        }
+          const div = document.createElement('div');
+          div.className = 'mermaid';
+          div.textContent = block.textContent;
+          pre.replaceWith(div);
+        });
         try {
-          await mermaid.run();
+          mermaid.run();
         } catch (e) {
-          console.warn('Mermaid execution error suppressed:', e);
+          console.warn('Mermaid rendering error:', e);
         }
-        // Remove any error SVGs or bomb icons if Mermaid ever inserted them
-        document.querySelectorAll('#dmermaid, [id^="dmermaid"], svg[aria-roledescription="error"], .error-icon').forEach(el => el.remove());
+        // Remove error SVGs if an error ever occurred
+        document.querySelectorAll('svg[aria-roledescription="error"]').forEach(el => el.remove());
       }
     }
   }
