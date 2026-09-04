@@ -20,6 +20,8 @@
   if (window.mermaid) {
     mermaid.initialize({
       startOnLoad: false,
+      suppressErrorRendering: true,
+      securityLevel: 'loose',
       theme: 'dark',
       themeVariables: {
         darkMode: true,
@@ -91,22 +93,33 @@
       });
     }
 
-    // Render Mermaid diagrams
+    // Render Mermaid diagrams safely without error bombs
     if (window.mermaid) {
       const mermaidBlocks = appElement.querySelectorAll('pre code.language-mermaid');
       if (mermaidBlocks.length > 0) {
-        mermaidBlocks.forEach(block => {
+        for (let i = 0; i < mermaidBlocks.length; i++) {
+          const block = mermaidBlocks[i];
           const pre = block.parentElement;
-          const div = document.createElement('div');
-          div.className = 'mermaid';
-          div.textContent = block.textContent;
-          pre.replaceWith(div);
-        });
-        try {
-          mermaid.run();
-        } catch (e) {
-          console.warn('Mermaid rendering error:', e);
+          const code = (block.textContent || '').trim();
+          try {
+            if (typeof mermaid.parse === 'function') {
+              await mermaid.parse(code);
+            }
+            const div = document.createElement('div');
+            div.className = 'mermaid';
+            div.textContent = code;
+            pre.replaceWith(div);
+          } catch (err) {
+            console.warn('Skipping invalid mermaid diagram:', err);
+          }
         }
+        try {
+          await mermaid.run();
+        } catch (e) {
+          console.warn('Mermaid execution error suppressed:', e);
+        }
+        // Remove any error SVGs or bomb icons if Mermaid ever inserted them
+        document.querySelectorAll('#dmermaid, [id^="dmermaid"], svg[aria-roledescription="error"], .error-icon').forEach(el => el.remove());
       }
     }
   }
@@ -116,6 +129,12 @@
     try {
       const postsJson = await fetchText('./data/posts.json');
       const posts = JSON.parse(postsJson);
+
+      posts.sort((a, b) => {
+        const timeA = new Date(a.date).getTime() || 0;
+        const timeB = new Date(b.date).getTime() || 0;
+        return timeB - timeA;
+      });
 
       let html = `
         <h1>Blog &amp; Technical Writeups</h1>

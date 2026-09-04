@@ -41,8 +41,12 @@ for (const file of files) {
   posts.push({ title, slug, date, summary, tags });
 }
 
-// Sort newest first
-posts.sort((a, b) => b.date.localeCompare(a.date));
+// Sort newest first (chronologically)
+posts.sort((a, b) => {
+  const timeA = new Date(a.date).getTime() || 0;
+  const timeB = new Date(b.date).getTime() || 0;
+  return timeB - timeA;
+});
 
 fs.writeFileSync(dataFile, JSON.stringify(posts, null, 2), 'utf8');
 console.log(`[OK] Successfully indexed ${posts.length} posts into data/posts.json:`);

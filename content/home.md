@@ -1,7 +1,7 @@
 # Homepage
 
 <div class="profile-img-container">
-  <img src="./assets/img/cat.png" alt="Vector Painted Cat" class="profile-img">
+  <img src="./assets/img/cat-glow.png" alt="Vintage Shadowed Cat" class="profile-img">
 </div>
 
 Penetration Tester specializing in web, network, and infrastructure security, with hands-on experience in vulnerability assessment, red team operations, and offensive tooling. Currently completing a B.Sc. in Computer Science at **Baku State University (SABAH groups - GPA: 90.8)** and formerly **Penetration Tester Intern at Bir Ecosystem / Kapital Bank**.

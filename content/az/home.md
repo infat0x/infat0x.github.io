@@ -1,7 +1,7 @@
 # Ana səhifə
 
 <div class="profile-img-container">
-  <img src="./assets/img/cat.png" alt="Vector Painted Cat" class="profile-img">
+  <img src="./assets/img/cat-glow.png" alt="Kölgəli Pişik" class="profile-img">
 </div>
 
 Veb, şəbəkə və infrastruktur təhlükəsizliyi, zəifliklərin qiymətləndirilməsi, red team əməliyyatları və offensive alətlərin yaradılması üzrə ixtisaslaşmış **Penetration Tester**. Hal-hazırda **Bakı Dövlət Universitetində (SABAH qrupları &mdash; GPA: 90.8)** Kompüter Elmləri təhsilini tamamlayıram və **Bir Ecosystem**-də Penetration Tester Intern vəzifəsində çalışmışam.

@@ -1,16 +1,5 @@
 [
   {
-    "title": "Defeating Extension Spoofing: Magic Bytes Forensics",
-    "slug": "magic-bytes",
-    "date": "November 2025",
-    "summary": "Modern attack chains frequently conceal weaponized files behind misleading extensions (e.g. invoice.pdf.exe or using right-to-left override Unicode characters). Operating systems a...",
-    "tags": [
-      "Digital Forensics",
-      "File Analysis",
-      "Defense"
-    ]
-  },
-  {
     "title": "Fixing Omarchy Stuck at Boot: A Complete Recovery Guide",
     "slug": "fixing-omarchy-stuck-at-boot",
     "date": "March 2026",
@@ -20,6 +9,17 @@
       "Arch",
       "Troubleshooting",
       "Recovery"
+    ]
+  },
+  {
+    "title": "Exploiting GNU telnetd Authentication Bypass (CVE-2026-24061)",
+    "slug": "cve-2026-24061",
+    "date": "February 2026",
+    "summary": "GNU InetUtils telnetd is a legacy remote terminal daemon still deployed in embedded devices, virtualization appliances, and internal lab environments. During code audit of the daem...",
+    "tags": [
+      "Exploit Dev",
+      "Vulnerability Research",
+      "Linux"
     ]
   },
   {
@@ -34,14 +34,14 @@
     ]
   },
   {
-    "title": "Exploiting GNU telnetd Authentication Bypass (CVE-2026-24061)",
-    "slug": "cve-2026-24061",
-    "date": "February 2026",
-    "summary": "GNU InetUtils telnetd is a legacy remote terminal daemon still deployed in embedded devices, virtualization appliances, and internal lab environments. During code audit of the daem...",
+    "title": "Defeating Extension Spoofing: Magic Bytes Forensics",
+    "slug": "magic-bytes",
+    "date": "November 2025",
+    "summary": "Modern attack chains frequently conceal weaponized files behind misleading extensions (e.g. invoice.pdf.exe or using right-to-left override Unicode characters). Operating systems a...",
     "tags": [
-      "Exploit Dev",
-      "Vulnerability Research",
-      "Linux"
+      "Digital Forensics",
+      "File Analysis",
+      "Defense"
     ]
   }
 ]

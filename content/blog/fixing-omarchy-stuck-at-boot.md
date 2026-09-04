@@ -23,13 +23,13 @@ The root cause is that `mkinitcpio` (the tool that builds the initial RAM filesy
 
 ```mermaid
 flowchart TD
-    A[Boot Omarchy] --> B[Enter LUKS password]
-    B --> C{What happens?}
-    C -->|Systemd logs appear then freeze| D[❌ initramfs broken]
-    C -->|Keyboard unresponsive at password screen| D
-    C -->|Plymouth splash bar stuck| D
-    C -->|Cannot open TTY with Ctrl+Alt+F2| D
-    D --> E[Follow this guide]
+    A["Boot Omarchy"] --> B["Enter LUKS password"]
+    B --> C{"What happens?"}
+    C -->|"Systemd logs appear then freeze"| D["initramfs broken"]
+    C -->|"Keyboard unresponsive at password screen"| D
+    C -->|"Plymouth splash bar stuck"| D
+    C -->|"Cannot open TTY with Ctrl+Alt+F2"| D
+    D --> E["Follow this guide"]
 ```
 
 ---
@@ -46,14 +46,14 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    A[Boot Omarchy ISO via Ventoy] --> B[Open TTY]
-    B --> C[Login as root]
-    C --> D[Unlock LUKS partition]
-    D --> E[Mount filesystem]
-    E --> F[arch-chroot into system]
-    F --> G[Run limine-mkinitcpio]
-    G --> H[Reboot]
-    H --> I[✅ Omarchy works]
+    A["Boot Omarchy ISO via Ventoy"] --> B["Open TTY"]
+    B --> C["Login as root"]
+    C --> D["Unlock LUKS partition"]
+    D --> E["Mount filesystem"]
+    E --> F["arch-chroot into system"]
+    F --> G["Run limine-mkinitcpio"]
+    G --> H["Reboot"]
+    H --> I["Omarchy works"]
 ```
 
 ---
@@ -71,9 +71,9 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    A[Ventoy Menu] --> B{Select boot mode}
-    B -->|Normal mode| C[❌ Out of memory error]
-    B -->|grub2 mode| D[✅ Boots successfully]
+    A["Ventoy Menu"] --> B{"Select boot mode"}
+    B -->|"Normal mode"| C["Out of memory error"]
+    B -->|"grub2 mode"| D["Boots successfully"]
 ```
 
 ---
@@ -125,13 +125,13 @@ Look for a partition with `crypto_LUKS` type. In most Omarchy dual-boot setups i
 
 ```mermaid
 flowchart TD
-    A[lsblk -f] --> B{Find crypto_LUKS partition}
-    B --> C[Usually nvme0n1p6]
-    C --> D[cryptsetup open /dev/nvme0n1p6 omarchy_root]
-    D --> E[Enter your Omarchy password]
-    E --> F{Success?}
-    F -->|No key available| G[Run: loadkeys us, then retry]
-    F -->|Opens successfully| H[Continue to Step 6]
+    A["lsblk -f"] --> B{"Find crypto_LUKS partition"}
+    B --> C["Usually nvme0n1p6"]
+    C --> D["cryptsetup open /dev/nvme0n1p6 omarchy_root"]
+    D --> E["Enter your Omarchy password"]
+    E --> F{"Success?"}
+    F -->|"No key available"| G["Run: loadkeys us, then retry"]
+    F -->|"Opens successfully"| H["Continue to Step 6"]
 ```
 
 Unlock the partition:
@@ -193,16 +193,16 @@ Updated: /boot/limine.conf
 
 ```mermaid
 flowchart TD
-    A[limine-mkinitcpio] --> B[Building UKI for linux]
-    B --> C[Running build hooks...]
-    C --> D{Warnings about firmware?}
-    D -->|Yes - WARNING missing firmware| E[Safe to ignore]
-    D -->|No warnings| F[Continue]
+    A["limine-mkinitcpio"] --> B["Building UKI for linux"]
+    B --> C["Running build hooks..."]
+    C --> D{"Warnings about firmware?"}
+    D -->|"Yes - WARNING missing firmware"| E["Safe to ignore"]
+    D -->|"No warnings"| F["Continue"]
     E --> F
-    F --> G[Initcpio image generation successful]
-    G --> H[Unified kernel image generation successful]
-    H --> I[Updated: /boot/limine.conf]
-    I --> J[✅ Done]
+    F --> G["Initcpio image generation successful"]
+    G --> H["Unified kernel image generation successful"]
+    H --> I["Updated: /boot/limine.conf"]
+    I --> J["Done"]
 ```
 
 ---
@@ -230,15 +230,15 @@ Remove the USB drive when the screen goes black.
 
 ```mermaid
 flowchart TD
-    A{Problem} --> B[cryptsetup: No key available]
-    A --> C[arch-chroot: failed to setup chroot]
-    A --> D[limine-mkinitcpio: Segmentation fault]
-    A --> E[Boot still hangs after fix]
+    A{"Problem"} --> B["cryptsetup: No key available"]
+    A --> C["arch-chroot: failed to setup chroot"]
+    A --> D["limine-mkinitcpio: Segmentation fault"]
+    A --> E["Boot still hangs after fix"]
 
-    B --> B1[Run: loadkeys us, then retry]
-    C --> C1[Wrong subvolume — use: mount -o subvol=@ /dev/mapper/omarchy_root /mnt]
-    D --> D1[/proc /sys /dev not mounted — run init=/bin/bash method instead]
-    E --> E1[Wait 10-15 min on first boot — system is configuring]
+    B --> B1["Run: loadkeys us, then retry"]
+    C --> C1["Wrong subvolume: mount -o subvol=@ /dev/mapper/omarchy_root /mnt"]
+    D --> D1["/proc /sys /dev not mounted: run init=/bin/bash method instead"]
+    E --> E1["Wait 10-15 min on first boot: system is configuring"]
 ```
 
 ### Common Issues
