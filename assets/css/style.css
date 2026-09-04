@@ -217,41 +217,53 @@ pre code {
 /* Code Block Copy Button */
 .copy-code-btn {
   position: absolute;
-  top: 6px;
-  right: 6px;
-  background: #252525;
-  border: 1px solid #444444;
-  color: #cccccc;
+  top: 7px;
+  right: 8px;
+  height: 24px;
+  padding: 0 9px;
+  background: #222222;
+  border: 1px solid #3c3c3c;
+  color: #8c8c8c;
   font-family: 'Source Code Pro', monospace;
-  font-size: 0.75rem;
-  padding: 3px 8px;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
   border-radius: 3px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  opacity: 0.75;
-  transition: all 0.15s ease;
+  justify-content: center;
+  gap: 5px;
+  opacity: 0.65;
+  transition: all 0.15s ease-in-out;
   user-select: none;
   z-index: 10;
 }
 
+.copy-code-btn .copy-icon {
+  display: block;
+  flex-shrink: 0;
+  stroke: currentColor;
+}
+
 pre:hover .copy-code-btn,
-.copy-code-btn:focus {
+.copy-code-btn:focus-visible {
   opacity: 1;
-  border-color: var(--theme-color);
+  color: #cccccc;
+  border-color: #4a4a4a;
 }
 
 .copy-code-btn:hover {
+  opacity: 1;
   color: #ffffff;
-  background-color: #333333;
+  background-color: #2e2e2e;
   border-color: var(--theme-color);
 }
 
 .copy-code-btn.copied {
+  opacity: 1;
   color: #00e676;
-  border-color: #00e676;
-  background: rgba(0, 230, 118, 0.1);
+  border-color: rgba(0, 230, 118, 0.4);
+  background: rgba(0, 230, 118, 0.08);
 }
 
 /* Interactive Mermaid Container: Zoom, Pan & Fullscreen */
