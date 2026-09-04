@@ -601,76 +601,38 @@ svg[aria-roledescription="error"] {
   width: 0 !important;
 }
 
-/* Bottom-Right Visitor Counter Widget (Consolas Font) */
+/* Bottom-Right Visitor Counter (Plain Consolas Text: 000001, 000002...) */
 .visitor-counter {
   position: fixed;
-  bottom: 18px;
-  right: 20px;
+  bottom: 12px;
+  right: 18px;
   z-index: 9999;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: rgba(22, 22, 22, 0.88);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid #333333;
-  border-radius: 4px;
-  padding: 5px 11px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.55);
-  font-family: 'Consolas', 'Source Code Pro', 'Courier New', monospace;
-  font-size: 0.78rem;
-  letter-spacing: 0.03em;
-  color: #888888;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  color: #777777;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
   user-select: none;
-  transition: all 0.2s ease;
+  cursor: default;
+  line-height: 1;
+  opacity: 0.8;
+  transition: opacity 0.2s ease, color 0.2s ease;
 }
 
 .visitor-counter:hover {
-  border-color: var(--theme-color);
-  background: rgba(28, 28, 28, 0.95);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
-}
-
-.visitor-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: #00e676;
-  box-shadow: 0 0 8px #00e676;
-  display: inline-block;
-  animation: visitor-pulse 2.2s infinite ease-in-out;
-}
-
-@keyframes visitor-pulse {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.35;
-    transform: scale(0.85);
-  }
-}
-
-.visitor-label {
-  color: #777777;
-  font-family: 'Consolas', monospace;
-  text-transform: lowercase;
-}
-
-.visitor-count {
-  font-family: 'Consolas', monospace;
-  font-weight: 700;
-  color: #eeeeee;
-  letter-spacing: 0.04em;
+  opacity: 1;
+  color: var(--color);
 }
 
 @media screen and (max-width: 680px) {
   .visitor-counter {
-    bottom: 12px;
+    bottom: 8px;
     right: 12px;
     font-size: 0.72rem;
-    padding: 4px 9px;
   }
 }
 

@@ -511,9 +511,9 @@
     }
   }
 
-  // Real-time Visitor Counter (Accurate hit/get logic with CountAPI)
+  // Real-time Visitor Counter (Padded plain text in Consolas: 000001, 000002...)
   async function initVisitorCounter() {
-    const counterElement = document.getElementById('visitor-count');
+    const counterElement = document.getElementById('visitor-counter');
     if (!counterElement) return;
 
     const counterKey = 'infat0x_github_io_visits';
@@ -522,10 +522,12 @@
       ? `https://countapi.mileshilliard.com/api/v1/hit/${counterKey}`
       : `https://countapi.mileshilliard.com/api/v1/get/${counterKey}`;
 
-    // Read cached count if available to avoid flash of loading
+    const formatCount = (num) => String(num || 0).padStart(6, '0');
+
+    // Read cached count if available to avoid delay
     const cachedCount = localStorage.getItem('last_known_' + counterKey);
     if (cachedCount) {
-      counterElement.textContent = Number(cachedCount).toLocaleString();
+      counterElement.textContent = formatCount(cachedCount);
     }
 
     try {
@@ -535,15 +537,15 @@
         if (data && typeof data.value === 'number') {
           sessionStorage.setItem('visited_' + counterKey, 'true');
           localStorage.setItem('last_known_' + counterKey, data.value);
-          counterElement.textContent = data.value.toLocaleString();
+          counterElement.textContent = formatCount(data.value);
         }
-      } else if (!counterElement.textContent || counterElement.textContent === '...') {
-        counterElement.textContent = cachedCount ? Number(cachedCount).toLocaleString() : '1';
+      } else if (!counterElement.textContent) {
+        counterElement.textContent = cachedCount ? formatCount(cachedCount) : '000001';
       }
     } catch (err) {
       console.warn('Visitor counter fetch failed:', err);
-      if (!counterElement.textContent || counterElement.textContent === '...') {
-        counterElement.textContent = cachedCount ? Number(cachedCount).toLocaleString() : '1';
+      if (!counterElement.textContent) {
+        counterElement.textContent = cachedCount ? formatCount(cachedCount) : '000001';
       }
     }
   }
