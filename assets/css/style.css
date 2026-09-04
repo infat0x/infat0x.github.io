@@ -146,10 +146,13 @@ p {
 
 .profile-img {
   width: 40%;
-  min-width: 280px;
-  max-width: 360px;
+  min-width: 260px;
+  max-width: 320px;
   height: auto;
   display: block;
+  border-radius: 4px;
+  border: 1px solid #383838;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
 }
 
 /* Lists */
