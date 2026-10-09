@@ -1,5 +1,18 @@
 [
   {
+    "title": "Caido Automate Payload Extractor (CAPE): Bridging the Proxy Intruder Gap",
+    "slug": "caido-automate-payload-extractor",
+    "date": "October 2026",
+    "summary": "During modern web application assessments and bug bounty hunting, workflow speed is critical. Migrating daily testing from legacy proxies to Caido(https://caido.io) has been a mass...",
+    "tags": [
+      "Caido",
+      "Web Security",
+      "Bug Bounty",
+      "Tooling",
+      "Pentest"
+    ]
+  },
+  {
     "title": "Fixing Omarchy Stuck at Boot: A Complete Recovery Guide",
     "slug": "fixing-omarchy-stuck-at-boot",
     "date": "March 2026",
