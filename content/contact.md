@@ -6,4 +6,5 @@ Feel free to reach out for penetration testing, security assessments, vulnerabil
 * **LinkedIn:** [linkedin.com/in/aliguliyevcs](https://www.linkedin.com/in/aliguliyevcs/)
 * **GitHub:** [github.com/infat0x](https://github.com/infat0x)
 * **Credly:** [credly.com/users/ali-guliyev](https://www.credly.com/users/ali-guliyev)
+* **x.com:** [x.com/infat0x](https://x.com/infat0x)
 * **Location:** Baku, Azerbaijan
